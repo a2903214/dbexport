@@ -11,6 +11,7 @@ import com.oscar.dbexport.db.IDbReader;
 import com.oscar.dbexport.meta.Database;
 import com.oscar.dbexport.meta.Schema;
 import com.oscar.dbexport.meta.Table;
+import com.oscar.dbexport.util.JDBCConnFactory;
 import com.oscar.dbexport.util.JDBCExecuteHelper;
 import com.oscar.dbexport.util.JDBCExecuteHelper.IDbMetaDataCallback;
 import com.oscar.dbexport.util.STErrorCode;
@@ -19,8 +20,15 @@ import com.oscar.dbexport.util.STException;
 public class BaseJDBCDataSourceReader implements IDbReader {
 	Connection conn;
 
-	BaseJDBCDataSourceReader(Connection conn) {
-		this.conn = conn;
+	BaseJDBCDataSourceReader(String driver, String url, String username,
+			String password) throws STException {
+		try {
+			this.conn = JDBCConnFactory.getConnection(driver, url, username,
+					password);
+		} catch (SQLException e) {
+			throw new STException(STErrorCode.UNKNOW_ERROR,
+					"connect to database error: " + e.getMessage(), e);
+		}
 	}
 
 	public List<Database> getAllDataBase() throws STException {
@@ -134,38 +142,68 @@ public class BaseJDBCDataSourceReader implements IDbReader {
 		return schema;
 	}
 
-	public List<Table> getAllTable(Schema schema) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Table> getAllTable(Schema schema) throws STException {
+		String dbName = null;
+		String schemaName = null;
+
+		if (null != schema) {
+			dbName = schema.getDbName();
+			schemaName = schema.getName();
+		}
+
+		return getAllTable(dbName, schemaName);
 	}
 
-	public List<Table> getAllTable(String dbName, String schemaName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Table> getAllTable(final String dbName, final String schemaName)
+			throws STException {
+		List<Table> tables = null;
+		try {
+			tables = JDBCExecuteHelper.execute(conn,
+					new IDbMetaDataCallback<List<Table>>() {
+
+						public ResultSet getResultSet(DatabaseMetaData dbmd)
+								throws SQLException {
+							return dbmd.getTables(dbName, schemaName, "%",
+									new String[] { "TABLE" });
+						}
+
+						public List<Table> process(ResultSet rs)
+								throws SQLException {
+							List<Table> tables = new ArrayList<Table>();
+							while (rs.next()) {
+								Table table = new Table();
+								table.setDbName(rs.getString("TABLE_CAT"));
+								table.setSchemaName(rs.getString("TABLE_SCHEM"));
+								table.setName(rs.getString("TABLE_NAME"));
+								table.setDesc(rs.getString("REMARKS"));
+								tables.add(table);
+							}
+							return tables;
+						}
+					});
+		} catch (SQLException e) {
+			throw new STException(STErrorCode.UNKNOW_ERROR,
+					"get database meta data error: " + e.getMessage(), e);
+		}
+		return tables;
 	}
 
-	public Table getTable(Schema schema, String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+	public Table getTable(final Schema schema, final String tableName)
+			throws STException {
+		String dbName = null;
+		String schemaName = null;
+
+		if (null != schema) {
+			dbName = schema.getDbName();
+			schemaName = schema.getName();
+		}
+
+		return getTable(dbName, schemaName, tableName);
 	}
 
 	public Table getTable(final String dbName, final String schemaName,
 			final String tableName) throws STException {
 		Table table = null;
-		/**
-		 * <pre>
-		 * TABLE_CAT String => table catalog (may be null) 
-		 * TABLE_SCHEM String => table schema (may be null) 
-		 * TABLE_NAME String => table name 
-		 * TABLE_TYPE String => table type. Typical types are "TABLE", "VIEW", "SYSTEM TABLE", "GLOBAL TEMPORARY", "LOCAL TEMPORARY", "ALIAS", "SYNONYM". 
-		 * REMARKS String => explanatory comment on the table 
-		 * TYPE_CAT String => the types catalog (may be null) 
-		 * TYPE_SCHEM String => the types schema (may be null) 
-		 * TYPE_NAME String => type name (may be null) 
-		 * SELF_REFERENCING_COL_NAME String => name of the designated "identifier" column of a typed table (may be null) 
-		 * REF_GENERATION String => specifies how values in SELF_REFERENCING_COL_NAME are created. Values are "SYSTEM", "USER", "DERIVED". (may be null)
-		 * </pre>
-		 */
 		try {
 			table = JDBCExecuteHelper.execute(conn,
 					new IDbMetaDataCallback<Table>() {

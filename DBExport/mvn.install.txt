@@ -1,0 +1,4 @@
+set JAVA_HOME=C:/Program Files/Java/jdk1.7.0_21
+set path=D:\tmp\apache-maven-3.2.3\bin;%PATH%
+mvn install:install-file -DgroupId=cryptix -DartifactId=cryptix-asn1 -Dversion=3.2.0 -Dfile=D:\doc\code\oscartools\driver\oscarJavaDriver\jdbc\V1.0\lib\libForSSL\cryptix-asn1.jar -DgeneratePom=true -Dpackaging=jar -X
+mvn install:install-file -DgroupId=com.oscar -DartifactId=oscarJDBC -Dversion=HLW_DR -Dfile=D:\doc\code\oscartools\driver\oscarJavaDriver\jdbc\V1.0\lib\libForSSL\cryptix-asn1.jar -DgeneratePom=true -Dpackaging=jar -X

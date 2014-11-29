@@ -51,23 +51,26 @@ public interface IMetaReader {
 	 * 获取指定模式下的所有表定义信息
 	 * @param schema
 	 * @return
+	 * @throws STException 
 	 */
-	List<Table> getAllTable(Schema schema);
+	List<Table> getAllTable(Schema schema) throws STException;
 	/**
 	 * 获取指定数据库名，模式名下的所有表定义信息
 	 * @param dbName
 	 * @param schemaName
 	 * @return
+	 * @throws STException 
 	 */
-	List<Table> getAllTable(String dbName, String schemaName);
+	List<Table> getAllTable(String dbName, String schemaName) throws STException;
 	
 	/**
 	 * 获取指定模式下的指定名称的表
 	 * @param schema
 	 * @param tableName
 	 * @return
+	 * @throws STException 
 	 */
-	Table getTable(Schema schema, String tableName);
+	Table getTable(Schema schema, String tableName) throws STException;
 	
 	/**
 	 * 获取指定数据库名、模式名、表名的表定义

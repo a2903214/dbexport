@@ -108,7 +108,11 @@ public class JDBCExecuteHelper {
 							tr1);
 				}
 			}
-			throw tr;
+			if (SQLException.class.isInstance(tr)) {
+				throw SQLException.class.cast(tr);
+			} else {
+				throw new SQLException("unknown error", tr);
+			}
 		}
 		return ret;
 	}

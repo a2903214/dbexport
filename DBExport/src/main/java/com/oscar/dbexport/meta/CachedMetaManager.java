@@ -27,15 +27,15 @@ public class CachedMetaManager implements IMetaReader {
 		return reader.getSchema(dbName, schemaName);
 	}
 
-	public List<Table> getAllTable(Schema schema) {
+	public List<Table> getAllTable(Schema schema) throws STException {
 		return reader.getAllTable(schema);
 	}
 
-	public List<Table> getAllTable(String dbName, String schemaName) {
+	public List<Table> getAllTable(String dbName, String schemaName) throws STException {
 		return reader.getAllTable(dbName, schemaName);
 	}
 
-	public Table getTable(Schema schema, String tableName) {
+	public Table getTable(Schema schema, String tableName) throws STException {
 		return reader.getTable(schema, tableName);
 	}
 
