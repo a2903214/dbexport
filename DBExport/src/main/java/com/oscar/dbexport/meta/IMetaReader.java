@@ -1,57 +1,81 @@
 package com.oscar.dbexport.meta;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import com.oscar.dbexport.util.STException;
 
 public interface IMetaReader {
 	/**
-	 * »ñÈ¡ËùÓĞµÄÊı¾İ¿â¶¨ÒåĞÅÏ¢
+	 * è·å–æ‰€æœ‰çš„æ•°æ®åº“å®šä¹‰ä¿¡æ¯
 	 * @return
+	 * @throws SQLException 
 	 */
-	List<Database> getAllDataBase();
+	List<Database> getAllDataBase() throws STException;
 	
 	/**
-	 * »ñÈ¡Ö¸¶¨Ãû³ÆµÄÊı¾İ¿â¶¨ÒåĞÅÏ¢
+	 * è·å–æŒ‡å®šåç§°çš„æ•°æ®åº“å®šä¹‰ä¿¡æ¯
 	 * @param dbName
 	 * @return
+	 * @throws STException 
 	 */
-	Database getDataBase(String dbName);
+	Database getDataBase(String dbName) throws STException;
 	
 	/**
-	 * »ñÈ¡Êı¾İ¿âÖĞµÄËùÓĞÄ£Ê½¶¨ÒåĞÅÏ¢
+	 * è·å–æ•°æ®åº“ä¸­çš„æ‰€æœ‰æ¨¡å¼å®šä¹‰ä¿¡æ¯
 	 * @param database
 	 * @return
+	 * @throws STException 
 	 */
-	List<Schema> getAllSchema(Database database);
+	List<Schema> getAllSchema(Database database) throws STException;
 	
 	/**
-	 * »ñÈ¡Êı¾İ¿âÖĞÖ¸¶¨Ãû³ÆÄ£Ê½µÄ¶¨ÒåĞÅÏ¢
+	 * è·å–æ•°æ®åº“ä¸­æŒ‡å®šåç§°æ¨¡å¼çš„å®šä¹‰ä¿¡æ¯
 	 * @param database
 	 * @param schemaName
-	 * @return
+	 * @return å¦‚æœæŒ‡å®šåç§°çš„schemaä¸å­˜åœ¨åˆ™è¿”å›NULL
+	 * @throws STException 
 	 */
-	Schema getSchema(Database database, String schemaName);
+	Schema getSchema(Database database, String schemaName) throws STException;
 	
 	/**
-	 * »ñÈ¡Ö¸¶¨Ãû³ÆÊı¾İ¿âÖĞÖ¸¶¨Ãû³ÆµÄÄ£Ê½¶¨ÒåĞÅÏ¢
+	 * è·å–æŒ‡å®šåç§°æ•°æ®åº“ä¸­æŒ‡å®šåç§°çš„æ¨¡å¼å®šä¹‰ä¿¡æ¯
 	 * @param dbName
 	 * @param schemaName
 	 * @return
+	 * @throws STException 
 	 */
-	Schema getSchema(String dbName, String schemaName);
+	Schema getSchema(String dbName, String schemaName) throws STException;
 	
 	/**
-	 * »ñÈ¡Ö¸¶¨Ä£Ê½ÏÂµÄËùÓĞ±í¶¨ÒåĞÅÏ¢
+	 * è·å–æŒ‡å®šæ¨¡å¼ä¸‹çš„æ‰€æœ‰è¡¨å®šä¹‰ä¿¡æ¯
 	 * @param schema
 	 * @return
 	 */
 	List<Table> getAllTable(Schema schema);
 	/**
-	 * »ñÈ¡Ö¸¶¨Êı¾İ¿âÃû£¬Ä£Ê½ÃûÏÂµÄËùÓĞ±í¶¨ÒåĞÅÏ¢
+	 * è·å–æŒ‡å®šæ•°æ®åº“åï¼Œæ¨¡å¼åä¸‹çš„æ‰€æœ‰è¡¨å®šä¹‰ä¿¡æ¯
 	 * @param dbName
 	 * @param schemaName
 	 * @return
 	 */
 	List<Table> getAllTable(String dbName, String schemaName);
+	
+	/**
+	 * è·å–æŒ‡å®šæ¨¡å¼ä¸‹çš„æŒ‡å®šåç§°çš„è¡¨
+	 * @param schema
+	 * @param tableName
+	 * @return
+	 */
 	Table getTable(Schema schema, String tableName);
-	Table getTable(String dbName, String schemaName, String tableName);
+	
+	/**
+	 * è·å–æŒ‡å®šæ•°æ®åº“åã€æ¨¡å¼åã€è¡¨åçš„è¡¨å®šä¹‰
+	 * @param dbName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * @throws STException 
+	 */
+	Table getTable(String dbName, String schemaName, String tableName) throws STException;
 }

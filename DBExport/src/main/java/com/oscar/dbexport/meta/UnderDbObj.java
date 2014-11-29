@@ -4,7 +4,8 @@ public class UnderDbObj extends BaseMetaObj {
 	private String dbName;
 
 	public static String makeUniqueName(String dbName, String name) {
-		return dbName + "." + name;
+		return ((dbName == null || dbName.isEmpty()) ? (dbName + ".") : dbName)
+				+ name;
 	}
 
 	public String getUniqueName() {
@@ -12,7 +13,7 @@ public class UnderDbObj extends BaseMetaObj {
 	}
 
 	public String getDbName() {
-		return (dbName == null || dbName.isEmpty()) ? "default" : dbName;
+		return dbName;
 	}
 
 	public void setDbName(String dbName) {

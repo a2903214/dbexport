@@ -1,5 +1,5 @@
 package com.oscar.dbexport.meta;
 
-public class Index {
+public class Index extends UnderTableObj {
 
 }

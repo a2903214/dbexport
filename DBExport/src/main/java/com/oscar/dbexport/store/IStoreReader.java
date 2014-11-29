@@ -1,5 +1,7 @@
 package com.oscar.dbexport.store;
 
-public interface IStoreReader {
+import com.oscar.dbexport.meta.IMetaReader;
+
+public interface IStoreReader extends IMetaReader {
 
 }

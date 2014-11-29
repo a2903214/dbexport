@@ -5,12 +5,13 @@ public class UnderSchemaObj extends UnderDbObj {
 
 	public static String makeUniqueName(String dbName, String schemaName,
 			String name) {
-		return dbName + "." + schemaName + "." + name;
+		return ((dbName == null || dbName.isEmpty()) ? (dbName + ".") : dbName)
+				+ ((schemaName == null || schemaName.isEmpty()) ? (schemaName + ".")
+						: schemaName) + "." + name;
 	}
 
 	public String getSchemaName() {
-		return (schemaName == null || schemaName.isEmpty()) ? "default"
-				: schemaName;
+		return schemaName;
 	}
 
 	public void setSchemaName(String schemaName) {
